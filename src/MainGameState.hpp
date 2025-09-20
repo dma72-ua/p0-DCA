@@ -1,5 +1,8 @@
 #pragma once
-#include <GameState.hpp>
+#include "GameState.hpp"
+extern "C" {
+    #include "raylib.h"
+}
 
 class MainGameState : public GameState
 {
