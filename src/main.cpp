@@ -15,6 +15,7 @@ int main() {
   InitWindow(screenWidth, screenHeight, "Flappy Bird DCA");
 
   while (!state_machine.is_game_ending()) {
+    delta_time = GetFrameTime();
     state_machine.handle_state_changes(delta_time);
     state_machine.getCurrentState()->handleInput();
     state_machine.getCurrentState()->update(delta_time);

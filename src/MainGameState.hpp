@@ -4,6 +4,12 @@ extern "C" {
     #include "raylib.h"
 }
 
+struct Bird
+{
+  int x, y;
+  float vy;
+};
+
 class MainGameState : public GameState
 {
     public:
@@ -21,4 +27,6 @@ class MainGameState : public GameState
     
     private:
         char entered_key;
+        Bird player;
+        int gravedad;
 };
