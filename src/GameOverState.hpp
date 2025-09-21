@@ -7,7 +7,7 @@ extern "C" {
 
 class GameOverState : public GameState {
 public:
-  GameOverState();
+  GameOverState(int);
   ~GameOverState() = default;
 
   void init() override;
@@ -17,6 +17,8 @@ public:
   void pause() override;
   void resume() override;
 
+  void setPlayerPoints(int points) { playerPoints = points; };
+
 private:
-  char entered_key;
+  int playerPoints;
 };

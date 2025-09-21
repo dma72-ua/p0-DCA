@@ -3,7 +3,7 @@
 #include "StateMachine.hpp"
 #include <iostream>
 
-GameOverState::GameOverState() {}
+GameOverState::GameOverState(int points) { playerPoints = points; }
 
 void GameOverState::init() {}
 
@@ -19,8 +19,10 @@ void GameOverState::render() {
 
   ClearBackground(RAYWHITE);
 
-  DrawText("Game Over \npulsa espacio para \nvolver a jugar", 20, 256, 15,
-           BLACK);
+  DrawText(("Puntuación Final: " + std::to_string(playerPoints)).c_str(), 20,
+           200, 22, GREEN);
+
+  DrawText("Game Over \npulsa espacio para \nvolver a jugar", 20, 256, 20, RED);
 
   EndDrawing();
 }

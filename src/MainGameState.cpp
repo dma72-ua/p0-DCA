@@ -44,8 +44,10 @@ void MainGameState::update(float deltaTime) {
 
   for (auto &pipe : pipes) {
     if (CheckCollisionRecs(pipe.top, playerRec) ||
-        CheckCollisionRecs(pipe.bot, playerRec))
-      this->state_machine->add_state(std::make_unique<GameOverState>(), true);
+        CheckCollisionRecs(pipe.bot, playerRec)) {
+      this->state_machine->add_state(
+          std::make_unique<GameOverState>(playerPoints), true);
+    }
 
     pipe.top.x -= PIPE_SPEED * deltaTime;
     pipe.bot.x -= PIPE_SPEED * deltaTime;
@@ -67,9 +69,8 @@ void MainGameState::render() {
 
   ClearBackground(RAYWHITE);
 
-  DrawText(("Puntuación: " + std::to_string(playerPoints)).c_str(), 20, 20, 15,
-           BLACK);
-  DrawText("Bienvenido a Flappy Bird DCA", 20, 256, 15, BLACK);
+  DrawText("Bienvenido a Flappy Bird DCA", 40, GetScreenHeight() / 2, 15,
+           DARKGRAY);
 
   DrawCircle(player.x, player.y, 17.0, RED);
 
@@ -77,6 +78,9 @@ void MainGameState::render() {
     DrawRectangleRec(pipe.top, GREEN);
     DrawRectangleRec(pipe.bot, GREEN);
   }
+
+  DrawText(("Puntuación: " + std::to_string(playerPoints)).c_str(), 20, 20, 15,
+           BLACK);
 
   EndDrawing();
 }
