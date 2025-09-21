@@ -1,7 +1,7 @@
 #include "MainGameState.hpp"
-#include <iostream>
 #include "GameOverState.hpp"
 #include "StateMachine.hpp"
+#include <iostream>
 
 MainGameState::MainGameState() {
   player.x = 200;
