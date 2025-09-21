@@ -9,6 +9,7 @@ extern "C" {
 struct Bird {
   float x, y;
   float vy;
+  float height, width;
 };
 
 struct PipePair {
@@ -37,12 +38,15 @@ private:
 
   std::deque<PipePair> pipes;
 
-  static constexpr int PIPE_W = 32;
-  static constexpr int PIPE_H = 320;
+  float PIPE_W;
+  float PIPE_H;
 
-  static constexpr int PIPE_GAP = 120;
+  float PIPE_GAP;
   static constexpr float PIPE_SPEED = 120.0f;
 
   float spawnTimer = 0.0f;
   float spawnEvery = 1.6f;
+
+  Texture2D birdSprite;
+  Texture2D pipeSprite;
 };
