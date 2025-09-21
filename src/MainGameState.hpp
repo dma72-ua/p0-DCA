@@ -3,12 +3,12 @@
 #include <deque>
 
 extern "C" {
-    #include "raylib.h"
+    #include "../vendor/include/raylib.h"
 }
 
 struct Bird
 {
-  int x, y;
+  float x, y;
   float vy;
 };
 

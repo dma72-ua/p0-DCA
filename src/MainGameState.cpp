@@ -1,68 +1,71 @@
 #include "MainGameState.hpp"
 #include <iostream>
+#include "GameOverState.hpp"
+#include "StateMachine.hpp"
 
-MainGameState::MainGameState()
-{
-    player.x = 200;
-    player.y = 200;
-    gravedad = 400;
+MainGameState::MainGameState() {
+  player.x = 200;
+  player.y = 200;
+  gravedad = 400;
 }
 
-void MainGameState::init()
-{
+void MainGameState::init() {}
 
+void MainGameState::handleInput() {
+  if (IsKeyPressed(KEY_SPACE))
+    player.vy = -300;
 }
 
-void MainGameState::handleInput()
-{
-    if(IsKeyPressed(KEY_SPACE))
-        player.vy = -300;
+void MainGameState::update(float deltaTime) {
+  player.vy += gravedad * deltaTime;
+  player.y += player.vy * deltaTime;
+
+  Rectangle playerRec = {static_cast<float>(player.x - 17.0),
+                         static_cast<float>(player.y - 17.0), 17.0, 17.0};
+
+  spawnTimer += deltaTime;
+  if (spawnTimer >= spawnEvery) {
+    spawnTimer = 0.0f;
+
+    int pipe_y_offset_top = GetRandomValue(PIPE_H / 2, GetScreenHeight() / 2);
+    float x = GetScreenWidth();
+
+    float y_top = -pipe_y_offset_top;
+    float y_bot = (PIPE_H - pipe_y_offset_top) +
+                  GetRandomValue(PIPE_H / 2, GetScreenHeight() / 2);
+
+    Rectangle top{x, y_top, PIPE_W, PIPE_H}, bot{x, y_bot, PIPE_W, PIPE_H};
+    PipePair pipe_pair{top, bot};
+
+    pipes.emplace_back(pipe_pair);
+  }
+
+  for (auto &pipe : pipes) {
+    if (CheckCollisionRecs(pipe.top, playerRec) ||
+        CheckCollisionRecs(pipe.bot, playerRec))
+      this->state_machine->add_state(std::make_unique<GameOverState>(), true);
+
+    pipe.top.x -= PIPE_SPEED * deltaTime;
+    pipe.bot.x -= PIPE_SPEED * deltaTime;
+  }
+
+  if (!pipes.empty() && pipes.front().bot.x < 0)
+    pipes.pop_front();
 }
 
-void MainGameState::update(float deltaTime)
-{
-    player.vy += gravedad * deltaTime;
-    player.y += player.vy * deltaTime;
+void MainGameState::render() {
+  BeginDrawing();
 
-    spawnTimer += deltaTime;
-    if(spawnTimer >= spawnEvery) {
-        spawnTimer = 0.0f;
+  ClearBackground(RAYWHITE);
 
-        int pipe_y_offset_top = GetRandomValue(PIPE_H/2, GetScreenHeight()/2);
-        int x = GetScreenWidth();
+  DrawText("Bienvenido a Flappy Bird DCA", 20, 256, 15, BLACK);
 
-        int y_top = -pipe_y_offset_top;
-        int y_bot = (PIPE_H - pipe_y_offset_top) + GetRandomValue(PIPE_H/2, GetScreenHeight()/2);
+  DrawCircle(player.x, player.y, 17.0, RED);
 
-        Rectangle top{x, y_top, PIPE_W, PIPE_H}, bot{x, y_bot, PIPE_W, PIPE_H};
-        PipePair pipe_pair{top, bot};
-        
-        pipes.emplace_back(pipe_pair);
-    }
+  for (auto &pipe : pipes) {
+    DrawRectangleRec(pipe.top, GREEN);
+    DrawRectangleRec(pipe.bot, GREEN);
+  }
 
-    for(auto& pipe : pipes) {
-        pipe.top.x -= PIPE_SPEED * deltaTime;
-        pipe.bot.x -= PIPE_SPEED * deltaTime;
-    }
-
-    if(!pipes.empty() && pipes.front().bot.x < 0)
-        pipes.pop_front();
-}
-
-void MainGameState::render()
-{
-        BeginDrawing();
-
-            ClearBackground(RAYWHITE);
-
-            DrawText("Bienvenido a Flappy Bird DCA", 20, 256, 15, BLACK);
-
-            DrawCircle(player.x, player.y, 17.0, RED);
-
-            for(auto& pipe : pipes) {
-                DrawRectangleRec(pipe.top, GREEN);
-                DrawRectangleRec(pipe.bot, GREEN);
-            }
-
-        EndDrawing();
+  EndDrawing();
 }
