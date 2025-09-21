@@ -1,3 +1,3 @@
 #include "GameState.hpp"
 
-GameState::GameState() : state_machine(nullptr){}
+GameState::GameState() : state_machine(nullptr) {}

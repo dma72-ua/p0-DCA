@@ -2,11 +2,13 @@
 #include "GameOverState.hpp"
 #include "StateMachine.hpp"
 #include <iostream>
+#include <string>
 
 MainGameState::MainGameState() {
   player.x = 200;
   player.y = 200;
   gravedad = 400;
+  playerPoints = 0;
 }
 
 void MainGameState::init() {}
@@ -51,6 +53,13 @@ void MainGameState::update(float deltaTime) {
 
   if (!pipes.empty() && pipes.front().bot.x < 0)
     pipes.pop_front();
+
+  for (auto &pipe : pipes) {
+    if (!pipe.scored && (pipe.bot.x + pipe.bot.width) < player.x) {
+      playerPoints++;
+      pipe.scored = true;
+    }
+  }
 }
 
 void MainGameState::render() {
@@ -58,6 +67,8 @@ void MainGameState::render() {
 
   ClearBackground(RAYWHITE);
 
+  DrawText(("Puntuación: " + std::to_string(playerPoints)).c_str(), 20, 20, 15,
+           BLACK);
   DrawText("Bienvenido a Flappy Bird DCA", 20, 256, 15, BLACK);
 
   DrawCircle(player.x, player.y, 17.0, RED);

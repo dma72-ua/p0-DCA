@@ -3,49 +3,46 @@
 #include <deque>
 
 extern "C" {
-    #include "../vendor/include/raylib.h"
+#include "../vendor/include/raylib.h"
 }
 
-struct Bird
-{
+struct Bird {
   float x, y;
   float vy;
 };
 
-struct PipePair
-{
+struct PipePair {
   Rectangle top, bot;
   bool scored = false;
 };
 
-class MainGameState : public GameState
-{
-    public:
-        MainGameState();
-        ~MainGameState() = default;
+class MainGameState : public GameState {
+public:
+  MainGameState();
+  ~MainGameState() = default;
 
-        void init() override;
-        void handleInput() override;
-        void update(float deltaTime) override;
-        void render() override;
+  void init() override;
+  void handleInput() override;
+  void update(float deltaTime) override;
+  void render() override;
 
-        void pause(){};
-        void resume(){};
+  void pause() {};
+  void resume() {};
 
-    
-    private:
-        char entered_key;
-        Bird player;
-        int gravedad;
+private:
+  char entered_key;
+  Bird player;
+  int playerPoints;
+  int gravedad;
 
-        std::deque<PipePair> pipes;
+  std::deque<PipePair> pipes;
 
-        static constexpr int PIPE_W = 32;
-        static constexpr int PIPE_H = 320;
+  static constexpr int PIPE_W = 32;
+  static constexpr int PIPE_H = 320;
 
-        static constexpr int PIPE_GAP = 120;
-        static constexpr float PIPE_SPEED = 120.0f;
+  static constexpr int PIPE_GAP = 120;
+  static constexpr float PIPE_SPEED = 120.0f;
 
-        float spawnTimer = 0.0f;
-        float spawnEvery = 1.6f;
+  float spawnTimer = 0.0f;
+  float spawnEvery = 1.6f;
 };
