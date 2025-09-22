@@ -1,6 +1,7 @@
 #pragma once
 #include "GameState.hpp"
 #include <deque>
+#include <vector>
 
 extern "C" {
 #include "../vendor/include/raylib.h"
@@ -49,7 +50,7 @@ private:
 
   float difficulty = 1.0;
 
-  Texture2D birdSprite;
+  std::vector<Texture2D> birdSprite;
   Texture2D pipeSprite;
 
   Sound dieSound;

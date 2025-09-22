@@ -3,6 +3,7 @@
 #include "StateMachine.hpp"
 #include <iostream>
 #include <string>
+#include <vector>
 
 MainGameState::MainGameState() {
   player.x = 200;
@@ -12,11 +13,14 @@ MainGameState::MainGameState() {
 }
 
 void MainGameState::init() {
-  birdSprite = LoadTexture("assets/yellowbird-upflap.png");
+  birdSprite = std::vector<Texture2D>(3);
+  birdSprite[0] = LoadTexture("assets/yellowbird-upflap.png");
+  birdSprite[1] = LoadTexture("assets/yellowbird-midflap.png");
+  birdSprite[2] = LoadTexture("assets/yellowbird-downflap.png");
   pipeSprite = LoadTexture("assets/pipe-green.png");
 
-  player.height = birdSprite.height;
-  player.width = birdSprite.width;
+  player.height = birdSprite[0].height;
+  player.width = birdSprite[0].width;
 
   PIPE_H = pipeSprite.height;
   PIPE_W = pipeSprite.width;
@@ -91,7 +95,17 @@ void MainGameState::render() {
   DrawText("Bienvenido a Flappy Bird DCA", 40, GetScreenHeight() / 2, 15,
            DARKGRAY);
 
-  DrawTexture(birdSprite, player.x, player.y, WHITE);
+  static float birdAnimTimer = 0.0f;
+  static int birdFrame = 0;
+  birdAnimTimer += GetFrameTime();
+  if (birdAnimTimer >= 0.15f) {
+    birdAnimTimer = 0.0f;
+    if (birdFrame == 2)
+      birdFrame = 0;
+    else
+      birdFrame++;
+  }
+  DrawTexture(birdSprite[birdFrame], player.x, player.y, WHITE);
 
   for (auto &pipe : pipes) {
     DrawTextureEx(this->pipeSprite, {pipe.top.x + PIPE_W, pipe.top.y + PIPE_H},
