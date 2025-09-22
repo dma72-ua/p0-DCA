@@ -9,6 +9,7 @@ int main() {
   const int screenHeight = 512;
 
   InitWindow(screenWidth, screenHeight, "Flappy Bird DCA");
+  InitAudioDevice();
 
   StateMachine state_machine = StateMachine();
   state_machine.add_state(std::make_unique<MainGameState>(), false);

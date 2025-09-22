@@ -21,11 +21,17 @@ void MainGameState::init() {
   PIPE_H = pipeSprite.height;
   PIPE_W = pipeSprite.width;
   PIPE_GAP = player.height + 4.5;
+
+  dieSound = LoadSound("assets/audio/die.wav");
+  wingSound = LoadSound("assets/audio/wing.wav");
+  pointSound = LoadSound("assets/audio/point.wav");
 }
 
 void MainGameState::handleInput() {
-  if (IsKeyPressed(KEY_SPACE))
+  if (IsKeyPressed(KEY_SPACE)) {
     player.vy = -300;
+    PlaySound(wingSound);
+  }
 }
 
 void MainGameState::update(float deltaTime) {
@@ -55,6 +61,7 @@ void MainGameState::update(float deltaTime) {
     if (CheckCollisionRecs(pipe.top, playerRec) ||
         CheckCollisionRecs(pipe.bot, playerRec) ||
         player.y > GetScreenHeight() || player.y < 0) {
+      PlaySound(dieSound);
       this->state_machine->add_state(
           std::make_unique<GameOverState>(playerPoints), true);
     }
@@ -68,6 +75,7 @@ void MainGameState::update(float deltaTime) {
 
   for (auto &pipe : pipes) {
     if (!pipe.scored && (pipe.bot.x + pipe.bot.width) < player.x) {
+      PlaySound(pointSound);
       playerPoints++;
       pipe.scored = true;
     }

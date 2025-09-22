@@ -49,4 +49,8 @@ private:
 
   Texture2D birdSprite;
   Texture2D pipeSprite;
+
+  Sound dieSound;
+  Sound wingSound;
+  Sound pointSound;
 };
