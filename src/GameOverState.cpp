@@ -5,7 +5,9 @@
 
 GameOverState::GameOverState(int points) { playerPoints = points; }
 
-void GameOverState::init() {}
+void GameOverState::init() {
+  gameOverSprite = LoadTexture("assets/gameover.png");
+}
 
 void GameOverState::handleInput() {
   if (IsKeyPressed(KEY_SPACE))
@@ -17,12 +19,14 @@ void GameOverState::update(float deltaTime) {}
 void GameOverState::render() {
   BeginDrawing();
 
-  ClearBackground(RAYWHITE);
+  ClearBackground(DARKGRAY);
 
   DrawText(("Puntuación Final: " + std::to_string(playerPoints)).c_str(), 20,
            200, 22, GREEN);
 
-  DrawText("Game Over \npulsa espacio para \nvolver a jugar", 20, 256, 20, RED);
+  DrawTexture(gameOverSprite, 20, 256, WHITE);
+
+  DrawText("Pulsa espacio para \nvolver a jugar", 20, 320, 20, RED);
 
   EndDrawing();
 }

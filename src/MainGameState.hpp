@@ -52,6 +52,7 @@ private:
 
   std::vector<Texture2D> birdSprite;
   Texture2D pipeSprite;
+  Texture2D backgroundSprite;
 
   Sound dieSound;
   Sound wingSound;

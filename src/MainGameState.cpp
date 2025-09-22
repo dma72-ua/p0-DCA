@@ -13,6 +13,8 @@ MainGameState::MainGameState() {
 }
 
 void MainGameState::init() {
+  backgroundSprite = LoadTexture("assets/background-night.png");
+
   birdSprite = std::vector<Texture2D>(3);
   birdSprite[0] = LoadTexture("assets/yellowbird-upflap.png");
   birdSprite[1] = LoadTexture("assets/yellowbird-midflap.png");
@@ -90,7 +92,8 @@ void MainGameState::update(float deltaTime) {
 void MainGameState::render() {
   BeginDrawing();
 
-  ClearBackground(RAYWHITE);
+  ClearBackground(WHITE);
+  DrawTexture(backgroundSprite, 0, 0, WHITE);
 
   DrawText("Bienvenido a Flappy Bird DCA", 40, GetScreenHeight() / 2, 15,
            DARKGRAY);

@@ -21,4 +21,5 @@ public:
 
 private:
   int playerPoints;
+  Texture2D gameOverSprite;
 };
