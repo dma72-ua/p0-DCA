@@ -66,8 +66,8 @@ void MainGameState::update(float deltaTime) {
           std::make_unique<GameOverState>(playerPoints), true);
     }
 
-    pipe.top.x -= PIPE_SPEED * deltaTime;
-    pipe.bot.x -= PIPE_SPEED * deltaTime;
+    pipe.top.x -= PIPE_SPEED * deltaTime * difficulty;
+    pipe.bot.x -= PIPE_SPEED * deltaTime * difficulty;
   }
 
   if (!pipes.empty() && pipes.front().bot.x < 0)
@@ -77,6 +77,7 @@ void MainGameState::update(float deltaTime) {
     if (!pipe.scored && (pipe.bot.x + pipe.bot.width) < player.x) {
       PlaySound(pointSound);
       playerPoints++;
+      difficulty += 0.1;
       pipe.scored = true;
     }
   }

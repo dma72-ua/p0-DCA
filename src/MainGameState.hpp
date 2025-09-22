@@ -42,10 +42,12 @@ private:
   float PIPE_H;
 
   float PIPE_GAP;
-  static constexpr float PIPE_SPEED = 120.0f;
+  float PIPE_SPEED = 120.0f;
 
   float spawnTimer = 0.0f;
   float spawnEvery = 1.6f;
+
+  float difficulty = 1.0;
 
   Texture2D birdSprite;
   Texture2D pipeSprite;
